@@ -3,13 +3,14 @@ from aqt.qt import *
 from aqt.editor import Editor
 from aqt.utils import showInfo
 
+from .translate import translate
 from .config_manager import  get_field
 
 def on_strike(editor: Editor):
-    convert_word(editor)
+    translate(editor)
 
 
-def symbol_button(buttons, editor, QPushButton=None):
+def symbol_button(buttons, editor):
     addon_dir = os.path.dirname(os.path.realpath(__file__))
     icon_path = os.path.join(addon_dir, 'resources/SymbolIcon.png')
 
@@ -60,7 +61,7 @@ def process_selected_cards_in_browser(browser):
         card = mw.col.getCard(card_id)
 
         note = card.note()
-        if not convert_words(note):
+        if not translate(note):
             failed_count += 1
         else:
             success_count += 1
