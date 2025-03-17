@@ -3,6 +3,8 @@
         "source_field": "Front",
         "target_field": "Back",
         "DEEPL_API_KEY": "",
+        "GOOGLE_CLOUD_API_KEY": "",
+        "MODE": "Google",
         "is_safe_mode": true
     },
     "character_count": {

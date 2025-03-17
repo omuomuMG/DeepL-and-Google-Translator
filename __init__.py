@@ -12,7 +12,7 @@ addHook("setupEditorButtons", symbol_button)
 
 action = QAction("Greatest-Translater", mw)
 
-action.triggered.connect(lambda: setting(get_field()[0], get_field()[1], get_field()[2], get_field()[3]))
+action.triggered.connect(lambda: setting(get_field()[0], get_field()[1], get_field()[2], get_field()[3], get_field()[4]))
 
 
 mw.form.menuTools.addAction(action)
