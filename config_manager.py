@@ -67,3 +67,27 @@ def get_field():
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
     return  source_field, target_field, api_key
+
+
+def get_character_count():
+    addon_dir = os.path.dirname(os.path.realpath(__file__))
+    json_path = os.path.join(addon_dir, 'setting.json')
+
+    with open(json_path, 'r+') as json_open:
+        json_load = json.load(json_open)
+        character_count_deepl = json_load['character_count']['deepl']
+        json_open.seek(0)
+        json.dump(json_load, json_open, indent=4)
+        json_open.truncate()
+
+    return character_count_deepl
+
+def write_character_count(total_character_length_deepl):
+    addon_dir = os.path.dirname(os.path.realpath(__file__))
+    json_path = os.path.join(addon_dir, 'setting.json')
+    with open(json_path, 'r+') as json_open:
+        json_load = json.load(json_open)
+        json_load['character_count']['deepl'] = total_character_length_deepl
+        json_open.seek(0)
+        json.dump(json_load, json_open, indent=4)
+        json_open.truncate()
