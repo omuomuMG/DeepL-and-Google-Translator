@@ -19,7 +19,6 @@ def translate(editor: Editor):
     note  = editor.note
     source_field, target_field, api_key = get_field()
     translator = deepl.Translator(api_key)
-    # source_text = note[source_field]
     if source_field not in note:
         showInfo("Source field not found. Check settings in Tools > Pronounce Symbol Generator Settings.")
         return
@@ -27,19 +26,13 @@ def translate(editor: Editor):
     if target_field not in note:
         showInfo(f"Target field '{target_field}' does not exist in the current note.")
         return
-    # result = "This is temp val"
-    result = translator.translate_text("Hello, world!", target_lang="FR").text
 
-
-    print(type(result))
-
-    # print("source_field_text:")
-    # print("result:" + result)
+    source_text = note[source_field]
+    result = translator.translate_text(source_text, target_lang="FR").text
 
     note[target_field] = result
     QTimer.singleShot(500, lambda: editor.loadNote())
 
-    return "a"
 
 
 def convert_word(editor: Editor):
