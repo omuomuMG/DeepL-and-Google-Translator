@@ -4,15 +4,17 @@ from aqt.editor import Editor
 from aqt.utils import showInfo
 
 from .translate import translate
-from .config_manager import  get_field
+from .config_manager import get_field, get_character_count
 
 def on_strike(editor: Editor):
     translate(editor)
 
-
 def symbol_button(buttons, editor):
     addon_dir = os.path.dirname(os.path.realpath(__file__))
-    icon_path = os.path.join(addon_dir, 'resources/SymbolIcon.png')
+    icon_path = os.path.join(addon_dir, 'resources/translate-bold-svgrepo-com.svg')
+
+    if get_character_count() > 400000:
+        icon_path = os.path.join(addon_dir, 'resources/translate-bold-svgrepo-com-red.svg')
 
     editor._links['symbol_button'] = on_strike
 
@@ -73,6 +75,6 @@ def process_selected_cards_in_browser(browser):
 
 
 def add_browser_menu_button(browser):
-    action = QAction("Translate selected words - PSG", browser)
+    action = QAction("Translate selected words - Greatest Translater", browser)
     action.triggered.connect(lambda: process_selected_cards_in_browser(browser))
     browser.form.menuEdit.addAction(action)

@@ -18,7 +18,7 @@ import deepl
 # Translate by using Deepl API
 def translate(editor: Editor):
     note  = editor.note
-    source_field, target_field, api_key = get_field()
+    source_field, target_field, api_key, is_safe_mode = get_field()
     translator = deepl.Translator(api_key)
     if source_field not in note:
         showInfo("Source field not found. Check settings in Tools > Greatest Translater Settings.")
@@ -30,21 +30,25 @@ def translate(editor: Editor):
 
 
     source_text = note[source_field]
+    if source_text == "":
+        showInfo("Source text must be not empty")
 
-    if check_api_limits(source_text):
+    if not is_safe_mode or check_api_limits(source_text):
         try:
-
             result = translator.translate_text(source_text, target_lang="FR").text
             note[target_field] = result
             QTimer.singleShot(500, lambda: editor.loadNote())
         except:
-            showInfo('Please make sure API key is correct.\n Check settings in Tools > Greatest Translater Settings.')
-    else:
+            showInfo('Error Occurred. \n Please make sure API key, Fields is correct.\n Check settings in Tools > Greatest Translater Settings.')
+    else: # If limit exceeds
         showInfo('The free quota for translations at DeepL may be exceeded. If you still wish to translate, please exit safe mode.')
 
+
+# Check to see if the API free quota has been exceeded.
 def check_api_limits(translated_text):
     character_count_deepl = get_character_count()
-    if character_count_deepl + len(translated_text) > 500000:
+    # The original limit was 50,000 characters
+    if character_count_deepl + len(translated_text) > 450000:
         return False
     else:
         write_character_count(character_count_deepl + len(translated_text))

@@ -2,7 +2,7 @@ import json
 from aqt.qt import *
 
 
-def setting(source_field, target_field, api_key):
+def setting(source_field, target_field, api_key, is_safe_mode):
 
     dialog = QDialog()
     dialog.setWindowTitle('Setting')
@@ -30,6 +30,11 @@ def setting(source_field, target_field, api_key):
     layout.addWidget(api_text)
 
 
+    safe_mode_checkbox = QCheckBox("Enable Safe Mode")
+    safe_mode_checkbox.setChecked(is_safe_mode)
+    layout.addWidget(safe_mode_checkbox)
+
+
     button = QPushButton('Save')
     button.clicked.connect(dialog.accept)
     layout.addWidget(button)
@@ -45,6 +50,8 @@ def setting(source_field, target_field, api_key):
         json_load['setting']['source_field'] = source_text.text()
         json_load['setting']['target_field'] = target_text.text()
         json_load['setting']['DEEPL_API_KEY'] = api_text.text()
+        json_load['setting']['is_safe_mode'] = safe_mode_checkbox.isChecked()
+
 
 
         json_open.seek(0)
@@ -61,12 +68,13 @@ def get_field():
         source_field = json_load['setting']['source_field']
         target_field = json_load['setting']['target_field']
         api_key = json_load['setting']['DEEPL_API_KEY']
+        is_safe_mode = json_load['setting']['is_safe_mode']
 
         # Move file pointer to the beginning of the file and dump updated data
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
-    return  source_field, target_field, api_key
+    return  source_field, target_field, api_key, is_safe_mode
 
 
 def get_character_count():

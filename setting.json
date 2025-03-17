@@ -2,7 +2,8 @@
     "setting": {
         "source_field": "Front",
         "target_field": "Back",
-        "DEEPL_API_KEY": ""
+        "DEEPL_API_KEY": "",
+        "is_safe_mode": true
     },
     "character_count": {
         "deepl": 0,
