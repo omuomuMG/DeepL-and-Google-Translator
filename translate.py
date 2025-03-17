@@ -17,9 +17,8 @@ import deepl
 
 def translate(editor: Editor):
     note  = editor.note
-    source_field, target_field = get_field()
-    auth_key = ""
-    translator = deepl.Translator(auth_key)
+    source_field, target_field, api_key = get_field()
+    translator = deepl.Translator(api_key)
     # source_text = note[source_field]
     if source_field not in note:
         showInfo("Source field not found. Check settings in Tools > Pronounce Symbol Generator Settings.")
@@ -44,7 +43,7 @@ def translate(editor: Editor):
 
 
 def convert_word(editor: Editor):
-    source_field, target_field = get_field()
+    source_field, target_field, api_key = get_field()
 
     if not editor.note:
         showInfo("No note selected.")

@@ -2,7 +2,7 @@ import json
 from aqt.qt import *
 
 
-def setting(source_field, target_field):
+def setting(source_field, target_field, api_key):
 
     dialog = QDialog()
     dialog.setWindowTitle('Setting')
@@ -23,6 +23,13 @@ def setting(source_field, target_field):
     layout.addWidget(target_text)
 
 
+    # about API KEY
+    api_label = QLabel("API KEY:")
+    api_text = QLineEdit(f"{api_key}")
+    layout.addWidget(api_label)
+    layout.addWidget(api_text)
+
+
     button = QPushButton('Save')
     button.clicked.connect(dialog.accept)
     layout.addWidget(button)
@@ -37,6 +44,8 @@ def setting(source_field, target_field):
         json_load = json.load(json_open)
         json_load['setting']['source_field'] = source_text.text()
         json_load['setting']['target_field'] = target_text.text()
+        json_load['setting']['DEEPL_API_KEY'] = api_text.text()
+
 
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
@@ -51,9 +60,10 @@ def get_field():
         json_load = json.load(json_open)
         source_field = json_load['setting']['source_field']
         target_field = json_load['setting']['target_field']
+        api_key = json_load['setting']['DEEPL_API_KEY']
 
         # Move file pointer to the beginning of the file and dump updated data
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
-    return  source_field, target_field
+    return  source_field, target_field, api_key
