@@ -19,8 +19,15 @@ import deepl
 # main translate program
 def translate(editor: Editor):
     note  = editor.note
-    source_field, target_field, deepl_api_key, google_cloud_api_key, translate_mode ,is_safe_mode = get_field()
-
+    settings = get_field()
+    source_field = settings.get('source_field')
+    target_field = settings.get('target_field')
+    deepl_api_key = settings.get('DEEPL_API_KEY')
+    google_cloud_api_key = settings.get('GOOGLE_CLOUD_API_KEY')
+    translate_mode = settings.get('translation_mode')
+    target_language_deepl = settings.get('target_language_deepl')
+    target_language_google = settings.get('target_language_google')
+    is_safe_mode = settings.get('is_safe_mode')
 
     if source_field not in note:
         showInfo("Source field not found. Check settings in Tools > Greatest Translater Settings.")
@@ -39,9 +46,9 @@ def translate(editor: Editor):
         result = ""
         if translate_mode == "DeepL" and (not is_safe_mode or check_api_limits(source_text)):
             translator = deepl.Translator(deepl_api_key)
-            result = translator.translate_text(source_text, target_lang="FR").text
+            result = translator.translate_text(source_text, target_lang=target_language_deepl).text
         elif translate_mode == "Google":
-            result = translate_by_cloud_translation(source_text, google_cloud_api_key,"JA")
+            result = translate_by_cloud_translation(source_text, google_cloud_api_key, target_language_google)
         else: # limit exceeds
             showInfo('The free quota for translations at DeepL may be exceeded. If you still wish to translate, please exit safe mode.')
             return
@@ -89,30 +96,3 @@ def check_api_limits(translated_text):
         return True
 
 
-
-def convert_word(editor: Editor):
-    source_field, target_field, api_key = get_field()
-
-    if not editor.note:
-        showInfo("No note selected.")
-        return
-
-    note = editor.note
-
-    if source_field not in note:
-        showInfo("Source field not found. Check settings in Tools > Pronounce Symbol Generator Settings.")
-        return
-
-    if target_field not in note:
-        showInfo(f"Target field '{target_field}' does not exist in the current note.")
-        return
-
-    source_text = note[source_field]
-
-
-    succeeded = True
-
-
-
-
-    QTimer.singleShot(500, lambda: editor.loadNote())

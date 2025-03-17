@@ -1,8 +1,20 @@
 import json
 from aqt.qt import *
 
+from .Supported_Languages import DEEPL_LANGUAGES, GOOGLE_LANGUAGES
 
-def setting(source_field, target_field, deepl_api_key, google_cloud_api_key, translate_mode, is_safe_mode):
+
+def setting():
+    settings = get_field()
+    source_field = settings.get('source_field')
+    target_field = settings.get('target_field')
+    deepl_api_key = settings.get('DEEPL_API_KEY')
+    google_cloud_api_key = settings.get('GOOGLE_CLOUD_API_KEY')
+    translate_mode = settings.get('translation_mode')
+    target_language_index_deepl = settings.get('target_language_index_deepl')
+    target_language_index_google = settings.get('target_language_index_google')
+    is_safe_mode = settings.get('is_safe_mode')
+
 
     dialog = QDialog()
     dialog.setWindowTitle('Setting')
@@ -35,6 +47,7 @@ def setting(source_field, target_field, deepl_api_key, google_cloud_api_key, tra
     layout.addWidget(deepl_api_label)
     layout.addWidget(google_cloud_api_text)
 
+    # Select Translation Mode Google Could or DeepL
     mode_label = QLabel("Mode:")
     layout.addWidget(mode_label)
     mode_layout = QHBoxLayout()
@@ -51,6 +64,42 @@ def setting(source_field, target_field, deepl_api_key, google_cloud_api_key, tra
         radio_deepl.setChecked(True)
     else:
         radio_google.setChecked(True)
+
+
+    # Select target language
+    target_language_label = QLabel("Target Language:")
+    layout.addWidget(target_language_label)
+    language_combo = QComboBox()
+
+    layout.addWidget(language_combo)
+
+    # update language lists depend on translation mode
+    def update_language_options():
+        language_combo.blockSignals(True)
+        language_combo.clear()
+
+
+        if radio_google.isChecked():  # Google mode
+            languages = GOOGLE_LANGUAGES
+            index = target_language_index_google
+        else: # Deepl mode
+            languages = DEEPL_LANGUAGES
+            index = target_language_index_deepl
+
+        for idx, (display, code) in enumerate(languages):
+            language_combo.addItem(display, code)
+            if code == translate_mode:
+                index = idx
+
+        language_combo.setCurrentIndex(index)
+        language_combo.blockSignals(False)
+
+    # Change immediately.
+    radio_google.toggled.connect(update_language_options)
+    radio_deepl.toggled.connect(update_language_options)
+
+    update_language_options()
+
 
 
 
@@ -71,19 +120,24 @@ def setting(source_field, target_field, deepl_api_key, google_cloud_api_key, tra
     addon_dir = os.path.dirname(os.path.realpath(__file__))
     json_path = os.path.join(addon_dir, 'setting.json')
 
+    # Save setting
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
         json_load['setting']['source_field'] = source_text.text()
         json_load['setting']['target_field'] = target_text.text()
         json_load['setting']['DEEPL_API_KEY'] = deepl_api_text.text()
         json_load['setting']['GOOGLE_CLOUD_API_KEY'] = google_cloud_api_text.text()
-        if radio_google.isChecked():
+
+        if radio_google.isChecked():  # Google mode
             json_load['setting']['translation_mode'] = "Google"
-        else:
+            json_load['setting']['target_language_index_google'] = language_combo.currentIndex()
+            json_load['setting']['target_language_google'] = language_combo.currentData()
+        else:  # DeepL mode
             json_load['setting']['translation_mode'] = "DeepL"
+            json_load['setting']['target_language_index_deepl'] = language_combo.currentIndex()
+            json_load['setting']['target_language_deepl'] = language_combo.currentData()
+
         json_load['setting']['is_safe_mode'] = safe_mode_checkbox.isChecked()
-
-
 
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
@@ -96,19 +150,15 @@ def get_field():
 
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
-        source_field = json_load['setting']['source_field']
-        target_field = json_load['setting']['target_field']
-        deepl_api_key = json_load['setting']['DEEPL_API_KEY']
-        google_cloud_api_key = json_load['setting']['GOOGLE_CLOUD_API_KEY']
-        translate_mode = json_load['setting']['translation_mode']
-        is_safe_mode = json_load['setting']['is_safe_mode']
-
+        settings = json_load.get('setting', {})
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
-    return  source_field, target_field, deepl_api_key, google_cloud_api_key, translate_mode, is_safe_mode
+    return settings
 
 
+
+# Read character count from Json
 def get_character_count():
     addon_dir = os.path.dirname(os.path.realpath(__file__))
     json_path = os.path.join(addon_dir, 'setting.json')
@@ -122,6 +172,7 @@ def get_character_count():
 
     return character_count_deepl
 
+# Write character count to Json
 def write_character_count(total_character_length_deepl):
     addon_dir = os.path.dirname(os.path.realpath(__file__))
     json_path = os.path.join(addon_dir, 'setting.json')
