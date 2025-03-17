@@ -4,8 +4,13 @@
         "target_field": "Back",
         "DEEPL_API_KEY": "",
         "GOOGLE_CLOUD_API_KEY": "",
-        "translation_mode": "DeepL",
-        "is_safe_mode": true
+        "translation_mode": "Google",
+        "target_language_deepl": "IT",
+        "target_language_index_deepl": 15,
+        "target_language_google": "ja",
+        "target_language_index_google": 84,
+        "is_safe_mode": true,
+        "target_language": "eu"
     },
     "character_count": {
         "deepl": 0,
