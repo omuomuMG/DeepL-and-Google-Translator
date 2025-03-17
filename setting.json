@@ -1,6 +1,7 @@
 {
     "setting": {
-        "source_field": "\u8868\u9762",
-        "target_field": "\u88cf\u9762"
+        "source_field": "Front",
+        "target_field": "Back",
+        "DEEPL_API_KEY": "INSERT_YOUR_API_KEY_HERE"
     }
 }
