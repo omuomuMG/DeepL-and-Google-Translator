@@ -2,7 +2,7 @@ import json
 from aqt.qt import *
 
 
-def setting(source_field, target_field, deepl_api_key, google_cloud_api_key, is_safe_mode):
+def setting(source_field, target_field, deepl_api_key, google_cloud_api_key, translate_mode, is_safe_mode):
 
     dialog = QDialog()
     dialog.setWindowTitle('Setting')
@@ -35,10 +35,30 @@ def setting(source_field, target_field, deepl_api_key, google_cloud_api_key, is_
     layout.addWidget(deepl_api_label)
     layout.addWidget(google_cloud_api_text)
 
+    mode_label = QLabel("Mode:")
+    layout.addWidget(mode_label)
+    mode_layout = QHBoxLayout()
+    radio_google = QRadioButton("Google Cloud")
+    radio_deepl = QRadioButton("DeepL")
+    mode_group = QButtonGroup()
+    mode_group.addButton(radio_google)
+    mode_group.addButton(radio_deepl)
+    mode_layout.addWidget(radio_google)
+    mode_layout.addWidget(radio_deepl)
+    layout.addLayout(mode_layout)
 
+    if translate_mode == "DeepL":
+        radio_deepl.setChecked(True)
+    else:
+        radio_google.setChecked(True)
+
+
+
+    # Safe Mode
     safe_mode_checkbox = QCheckBox("Enable Safe Mode")
     safe_mode_checkbox.setChecked(is_safe_mode)
     layout.addWidget(safe_mode_checkbox)
+
 
 
     button = QPushButton('Save')
@@ -57,6 +77,10 @@ def setting(source_field, target_field, deepl_api_key, google_cloud_api_key, is_
         json_load['setting']['target_field'] = target_text.text()
         json_load['setting']['DEEPL_API_KEY'] = deepl_api_text.text()
         json_load['setting']['GOOGLE_CLOUD_API_KEY'] = google_cloud_api_text.text()
+        if radio_google.isChecked():
+            json_load['setting']['translation_mode'] = "Google"
+        else:
+            json_load['setting']['translation_mode'] = "DeepL"
         json_load['setting']['is_safe_mode'] = safe_mode_checkbox.isChecked()
 
 
@@ -74,14 +98,15 @@ def get_field():
         json_load = json.load(json_open)
         source_field = json_load['setting']['source_field']
         target_field = json_load['setting']['target_field']
-        google_cloud_api_key = json_load['setting']['GOOGLE_CLOUD_API_KEY']
         deepl_api_key = json_load['setting']['DEEPL_API_KEY']
+        google_cloud_api_key = json_load['setting']['GOOGLE_CLOUD_API_KEY']
+        translate_mode = json_load['setting']['translation_mode']
         is_safe_mode = json_load['setting']['is_safe_mode']
 
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
-    return  source_field, target_field, deepl_api_key, google_cloud_api_key, is_safe_mode
+    return  source_field, target_field, deepl_api_key, google_cloud_api_key, translate_mode, is_safe_mode
 
 
 def get_character_count():

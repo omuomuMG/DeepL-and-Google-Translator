@@ -4,7 +4,7 @@
         "target_field": "Back",
         "DEEPL_API_KEY": "",
         "GOOGLE_CLOUD_API_KEY": "",
-        "MODE": "Google",
+        "translation_mode": "DeepL",
         "is_safe_mode": true
     },
     "character_count": {
