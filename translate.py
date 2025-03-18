@@ -19,6 +19,8 @@ import deepl
 # main translate program
 def translate(editor: Editor):
     note  = editor.note
+
+    # Fetch Datas from Json file
     settings = get_field()
     source_field = settings.get('source_field')
     target_field = settings.get('target_field')
@@ -69,7 +71,6 @@ def translate_by_cloud_translation(source_text, api_key, target_language):
 
     service = build('translate', 'v2', developerKey= api_key)
 
-
     response = service.translations().list(
         q=source_text,
         target=target_language,
@@ -81,9 +82,6 @@ def translate_by_cloud_translation(source_text, api_key, target_language):
         return translations[0].get("translatedText")
     else:
         return None
-
-
-
 
 # Check to see if the API free quota has been exceeded.
 def check_api_limits(translated_text):
