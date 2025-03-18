@@ -11,10 +11,19 @@ def on_strike(editor: Editor):
 
 def symbol_button(buttons, editor):
     addon_dir = os.path.dirname(os.path.realpath(__file__))
-    icon_path = os.path.join(addon_dir, 'resources/translate-bold-svgrepo-com.svg')
+    icon_path = os.path.join(addon_dir, 'resources/deepl-logo-normal.png')
 
-    if get_character_count() > 400000:
-        icon_path = os.path.join(addon_dir, 'resources/translate-bold-svgrepo-com-red.svg')
+    settings = get_field()
+    translate_mode = settings.get('translation_mode')
+
+    if translate_mode == 'DeepL' and get_character_count() > 400000:
+        icon_path = os.path.join(addon_dir, 'resources/deepl-logo-near-limit.png')
+    elif translate_mode == 'DeepL':
+        icon_path = os.path.join(addon_dir, 'resources/deepl-logo-normal.png')
+    if translate_mode == 'Google' and get_character_count() > 400000:
+        icon_path = os.path.join(addon_dir, 'resources/google-logo-near-limit.png')
+    elif translate_mode == 'Google':
+        icon_path = os.path.join(addon_dir, 'resources/google-logo-normal.png')
 
     editor._links['symbol_button'] = on_strike
 
