@@ -4,10 +4,17 @@ from aqt.editor import Editor
 from aqt.utils import showInfo
 
 from .translate import translate
-from .config_manager import get_field, get_character_count
+from .config_manager import get_field, get_character_count, setting
+
 
 def on_strike(editor: Editor):
     translate(editor)
+
+
+# Editor is passed as an argument at auto
+def open_setting(editor: Editor):
+    setting()
+
 
 def symbol_button(buttons, editor):
     addon_dir = os.path.dirname(os.path.realpath(__file__))
@@ -51,6 +58,37 @@ def symbol_button(buttons, editor):
     return buttons + [button]
 
 
+
+def setting_button(buttons, editor):
+    addon_dir = os.path.dirname(os.path.realpath(__file__))
+    icon_path = os.path.join(addon_dir, 'resources/deepl-logo-near-limit.png')
+
+    editor._links['setting_button'] = open_setting
+
+    button = editor._addButton(
+        icon_path,
+        "setting_button",  # Button name
+        "setting_button"  # Button label
+    )
+
+
+    if isinstance(button, QPushButton):
+        button.setStyleSheet("""
+            QPushButton {
+                width: 40px;  # Set width
+                height: 40px;  # Set height
+                padding: 0px;  # Remove padding
+            }
+            QPushButton:pressed {
+                background-color: #dddddd;  # Background color when pressed
+            }
+        """)
+    else:
+        print("Error: The returned button is not a QPushButton.")
+
+    return buttons + [button]
+
+
 def get_selected_cards_from_browser(browser):
     selected_card_ids = browser.selectedCards()
     if not selected_card_ids:
@@ -60,7 +98,6 @@ def get_selected_cards_from_browser(browser):
 
 
 def process_selected_cards_in_browser(browser):
-
     selected_card_ids = get_selected_cards_from_browser(browser)
     if not selected_card_ids:
         return
