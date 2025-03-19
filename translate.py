@@ -8,14 +8,6 @@ from aqt.utils import showInfo
 
 from .config_manager import get_field,get_character_count, write_character_count
 
-
-addon_dir = os.path.dirname(os.path.realpath(__file__))
-vendor_dir = os.path.join(addon_dir, "deepl-1.21.0")
-sys.path.append(vendor_dir)
-
-import deepl
-
-
 # main translate program
 def translate(editor: Editor):
     note  = editor.note
@@ -47,8 +39,7 @@ def translate(editor: Editor):
     try:
         result = ""
         if translate_mode == "DeepL" and (not is_safe_mode or check_api_limits(source_text)):
-            translator = deepl.Translator(deepl_api_key)
-            result = translator.translate_text(source_text, target_lang=target_language_deepl).text
+            result = translate_by_deepl(source_text, deepl_api_key, target_language_deepl)
         elif translate_mode == "Google":
             result = translate_by_cloud_translation(source_text, google_cloud_api_key, target_language_google)
         else: # limit exceeds
@@ -81,6 +72,21 @@ def translate_by_cloud_translation(source_text, api_key, target_language):
     if translations and len(translations) > 0:
         return translations[0].get("translatedText")
     else:
+        return None
+
+# Translate by using deepL
+def translate_by_deepl(source_text, api_key, target_language):
+    addon_dir = os.path.dirname(os.path.realpath(__file__))
+    vendor_dir = os.path.join(addon_dir, "deepl-1.21.0")
+    sys.path.append(vendor_dir)
+
+    import deepl
+
+    try:
+        translator = deepl.Translator(api_key)
+        result = translator.translate_text(source_text, target_lang=target_language).text
+        return result
+    except:
         return None
 
 # Check to see if the API free quota has been exceeded.
