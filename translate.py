@@ -6,7 +6,7 @@ from PyQt6.QtCore import QTimer
 from aqt.editor import Editor
 from aqt.utils import showInfo
 
-from .config_manager import get_field,get_character_count, write_character_count
+from .config_manager import get_field, get_character_count, write_character_count
 
 # main translate function
 def translate(editor: Editor):
@@ -39,9 +39,9 @@ def translate(editor: Editor):
 
     try:
         result = ""
-        if translate_mode == "DeepL" and (not is_safe_mode or check_api_limits(source_text)):
+        if translate_mode == "DeepL" and (not is_safe_mode or check_api_limits(source_text, translate_mode)):
             result = translate_by_deepl(source_text, deepl_api_key, target_language_deepl)
-        elif translate_mode == "Google" and (not is_safe_mode or check_api_limits(source_text)):
+        elif translate_mode == "Google" and (not is_safe_mode or check_api_limits(source_text, translate_mode)):
             result = translate_by_cloud_translation(source_text, google_cloud_api_key, target_language_google)
         else: # limit exceeds
             showInfo('The free quota for translations may be exceeded. If you still wish to translate, please exit safe mode.')
@@ -92,8 +92,8 @@ def translate_by_deepl(source_text, api_key, target_language):
         return None
 
 # Check to see if the API free quota has been exceeded.
-def check_api_limits(translated_text):
-    character_count = get_character_count()
+def check_api_limits(translated_text, translation_mode):
+    character_count = get_character_count(translation_mode)
     # The original limit was 50,000 characters
     if character_count + len(translated_text) > 450000:
         return False

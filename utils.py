@@ -10,7 +10,6 @@ from .config_manager import get_field, get_character_count, setting
 def on_strike(editor: Editor):
     translate(editor)
 
-
 # Editor is passed as an argument at auto
 def open_setting(editor: Editor):
     setting(True)
@@ -23,11 +22,11 @@ def symbol_button(buttons, editor):
     settings = get_field()
     translate_mode = settings.get('translation_mode')
 
-    if translate_mode == 'DeepL' and get_character_count() > 400000:
+    if translate_mode == 'DeepL' and get_character_count(translate_mode) > 400000:
         icon_path = os.path.join(addon_dir, 'resources/deepl-logo-near-limit.png')
     elif translate_mode == 'DeepL':
         icon_path = os.path.join(addon_dir, 'resources/deepl-logo-normal.png')
-    if translate_mode == 'Google' and get_character_count() > 400000:
+    if translate_mode == 'Google' and get_character_count(translate_mode) > 400000:
         icon_path = os.path.join(addon_dir, 'resources/google-logo-near-limit.png')
     elif translate_mode == 'Google':
         icon_path = os.path.join(addon_dir, 'resources/google-logo-normal.png')
