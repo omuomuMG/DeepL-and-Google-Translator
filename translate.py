@@ -35,6 +35,7 @@ def translate(editor: Editor):
     source_text = note[source_field]
     if source_text == "":
         showInfo("Source text must be not empty")
+        return
 
     try:
         result = ""
@@ -51,6 +52,7 @@ def translate(editor: Editor):
 
     except:
         showInfo('Error Occurred. \n Please make sure API key, Fields is correct.\n Check settings in Tools > Greatest Translater Settings.')
+        return
 
 
 # Translate by using Google Cloud Translation
