@@ -4,7 +4,7 @@ from aqt.qt import *
 from .Supported_Languages import DEEPL_LANGUAGES, GOOGLE_LANGUAGES
 
 
-def setting():
+def setting(from_browser = False):
     settings = get_field()
     source_field = settings.get('source_field')
     target_field = settings.get('target_field')
@@ -14,7 +14,6 @@ def setting():
     target_language_index_deepl = settings.get('target_language_index_deepl')
     target_language_index_google = settings.get('target_language_index_google')
     is_safe_mode = settings.get('is_safe_mode')
-
 
     dialog = QDialog()
     dialog.setWindowTitle('Setting')
@@ -35,36 +34,47 @@ def setting():
     layout.addWidget(target_text)
 
 
-    # about Deepl API KEY
-    deepl_api_label = QLabel("DeepL API KEY:")
-    deepl_api_text = QLineEdit(f"{deepl_api_key}")
-    layout.addWidget(deepl_api_label)
-    layout.addWidget(deepl_api_text)
 
-    # about Google Cloud API KEY
-    deepl_api_label = QLabel("Google Could API KEY:")
-    google_cloud_api_text = QLineEdit(f"{google_cloud_api_key}")
-    layout.addWidget(deepl_api_label)
-    layout.addWidget(google_cloud_api_text)
 
-    # Select Translation Mode Google Could or DeepL
-    mode_label = QLabel("Mode:")
-    layout.addWidget(mode_label)
-    mode_layout = QHBoxLayout()
-    radio_google = QRadioButton("Google Cloud")
-    radio_deepl = QRadioButton("DeepL")
-    mode_group = QButtonGroup()
-    mode_group.addButton(radio_google)
-    mode_group.addButton(radio_deepl)
-    mode_layout.addWidget(radio_google)
-    mode_layout.addWidget(radio_deepl)
-    layout.addLayout(mode_layout)
 
-    if translate_mode == "DeepL":
-        radio_deepl.setChecked(True)
+
+    # User can change API key and mode only from Menu
+    if not from_browser:
+        # about Deepl API KEY
+        deepl_api_label = QLabel("DeepL API KEY:")
+        deepl_api_text = QLineEdit(f"{deepl_api_key}")
+        layout.addWidget(deepl_api_label)
+        layout.addWidget(deepl_api_text)
+
+        # about Google Cloud API KEY
+        deepl_api_label = QLabel("Google Could API KEY:")
+        google_cloud_api_text = QLineEdit(f"{google_cloud_api_key}")
+        layout.addWidget(deepl_api_label)
+        layout.addWidget(google_cloud_api_text)
+
+
+        # Select Translation Mode Google Could or DeepL
+        mode_label = QLabel("Mode:")
+        layout.addWidget(mode_label)
+        mode_layout = QHBoxLayout()
+
+        # Radio button about mode
+        radio_google = QRadioButton("Google Cloud")
+        radio_deepl = QRadioButton("DeepL")
+        mode_group = QButtonGroup()
+        mode_group.addButton(radio_google)
+        mode_group.addButton(radio_deepl)
+        mode_layout.addWidget(radio_google)
+        mode_layout.addWidget(radio_deepl)
+        layout.addLayout(mode_layout)
+
+        if translate_mode == "DeepL":
+            radio_deepl.setChecked(True)
+        else:
+            radio_google.setChecked(True)
     else:
-        radio_google.setChecked(True)
-
+        mode_label = QLabel(f"ℹ️Current Mode : ---{translate_mode}---\n\nMode and API key can only changed form Setting.\n\nCheck settings in Tools > Greatest Translater Settings.")
+        layout.addWidget(mode_label)
 
     # Select target language
     target_language_label = QLabel("Target Language:")
@@ -78,8 +88,7 @@ def setting():
         language_combo.blockSignals(True)
         language_combo.clear()
 
-
-        if radio_google.isChecked():  # Google mode
+        if (translate_mode == "Google" and from_browser) or (not from_browser and radio_google.isChecked()):  # Google mode
             languages = GOOGLE_LANGUAGES
             index = target_language_index_google
         else: # Deepl mode
@@ -94,21 +103,17 @@ def setting():
         language_combo.setCurrentIndex(index)
         language_combo.blockSignals(False)
 
-    # Change immediately.
-    radio_google.toggled.connect(update_language_options)
-    radio_deepl.toggled.connect(update_language_options)
+    if not from_browser:
+        # Change immediately.
+        radio_google.toggled.connect(update_language_options)
+        radio_deepl.toggled.connect(update_language_options)
 
     update_language_options()
-
-
-
 
     # Safe Mode
     safe_mode_checkbox = QCheckBox("Enable Safe Mode")
     safe_mode_checkbox.setChecked(is_safe_mode)
     layout.addWidget(safe_mode_checkbox)
-
-
 
     button = QPushButton('Save')
     button.clicked.connect(dialog.accept)
@@ -125,10 +130,12 @@ def setting():
         json_load = json.load(json_open)
         json_load['setting']['source_field'] = source_text.text()
         json_load['setting']['target_field'] = target_text.text()
-        json_load['setting']['DEEPL_API_KEY'] = deepl_api_text.text()
-        json_load['setting']['GOOGLE_CLOUD_API_KEY'] = google_cloud_api_text.text()
 
-        if radio_google.isChecked():  # Google mode
+        if not from_browser:
+            json_load['setting']['DEEPL_API_KEY'] = deepl_api_text.text()
+            json_load['setting']['GOOGLE_CLOUD_API_KEY'] = google_cloud_api_text.text()
+
+        if translate_mode == "Google" and from_browser  or (not from_browser and radio_google.isChecked()):  # Google mode
             json_load['setting']['translation_mode'] = "Google"
             json_load['setting']['target_language_index_google'] = language_combo.currentIndex()
             json_load['setting']['target_language_google'] = language_combo.currentData()

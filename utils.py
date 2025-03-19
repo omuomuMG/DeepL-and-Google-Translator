@@ -13,7 +13,7 @@ def on_strike(editor: Editor):
 
 # Editor is passed as an argument at auto
 def open_setting(editor: Editor):
-    setting()
+    setting(True)
 
 
 def symbol_button(buttons, editor):
