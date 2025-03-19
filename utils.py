@@ -61,7 +61,7 @@ def symbol_button(buttons, editor):
 
 def setting_button(buttons, editor):
     addon_dir = os.path.dirname(os.path.realpath(__file__))
-    icon_path = os.path.join(addon_dir, 'resources/deepl-logo-near-limit.png')
+    icon_path = os.path.join(addon_dir, 'resources/setting.png')
 
     editor._links['setting_button'] = open_setting
 
