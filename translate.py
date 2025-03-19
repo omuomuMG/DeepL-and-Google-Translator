@@ -8,7 +8,7 @@ from aqt.utils import showInfo
 
 from .config_manager import get_field,get_character_count, write_character_count
 
-# main translate program
+# main translate function
 def translate(editor: Editor):
     note  = editor.note
 
@@ -40,10 +40,10 @@ def translate(editor: Editor):
         result = ""
         if translate_mode == "DeepL" and (not is_safe_mode or check_api_limits(source_text)):
             result = translate_by_deepl(source_text, deepl_api_key, target_language_deepl)
-        elif translate_mode == "Google":
+        elif translate_mode == "Google" and (not is_safe_mode or check_api_limits(source_text)):
             result = translate_by_cloud_translation(source_text, google_cloud_api_key, target_language_google)
         else: # limit exceeds
-            showInfo('The free quota for translations at DeepL may be exceeded. If you still wish to translate, please exit safe mode.')
+            showInfo('The free quota for translations may be exceeded. If you still wish to translate, please exit safe mode.')
             return
 
         note[target_field] = result
@@ -91,12 +91,12 @@ def translate_by_deepl(source_text, api_key, target_language):
 
 # Check to see if the API free quota has been exceeded.
 def check_api_limits(translated_text):
-    character_count_deepl = get_character_count()
+    character_count = get_character_count()
     # The original limit was 50,000 characters
-    if character_count_deepl + len(translated_text) > 450000:
+    if character_count + len(translated_text) > 450000:
         return False
     else:
-        write_character_count(character_count_deepl + len(translated_text))
+        write_character_count(character_count + len(translated_text))
         return True
 
 

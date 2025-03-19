@@ -165,20 +165,27 @@ def get_character_count():
 
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
-        character_count_deepl = json_load['character_count']['deepl']
+        if json_load['setting']['translation_mode'] == 'DeepL':
+            character_count = json_load['character_count']['deepl']
+        else:
+            character_count = json_load['character_count']['google']
+
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
 
-    return character_count_deepl
+    return character_count
 
 # Write character count to Json
-def write_character_count(total_character_length_deepl):
+def write_character_count(total_character_length):
     addon_dir = os.path.dirname(os.path.realpath(__file__))
     json_path = os.path.join(addon_dir, 'setting.json')
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
-        json_load['character_count']['deepl'] = total_character_length_deepl
+        if json_load['setting']['translation_mode'] == 'DeepL':
+            json_load['character_count']['deepl'] = total_character_length
+        else:
+            json_load['character_count']['google'] = total_character_length
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
