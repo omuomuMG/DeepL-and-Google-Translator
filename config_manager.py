@@ -1,8 +1,8 @@
 import json
 from aqt.qt import *
 
+from .api_limits import deepl_api_limits, google_cloud_api_limits
 from .Supported_Languages import DEEPL_LANGUAGES, GOOGLE_LANGUAGES
-
 
 def setting(from_browser = False):
     settings = get_field()
@@ -32,11 +32,6 @@ def setting(from_browser = False):
     target_text = QLineEdit(f"{target_field}")
     layout.addWidget(target_label)
     layout.addWidget(target_text)
-
-
-
-
-
 
     # User can change API key and mode only from Menu
     if not from_browser:
@@ -73,7 +68,7 @@ def setting(from_browser = False):
         else:
             radio_google.setChecked(True)
     else:
-        mode_label = QLabel(f"ℹ️Current Mode : ---{translate_mode}---\n\nMode and API key can only changed form Setting.\n\nCheck settings in Tools > Greatest Translater Settings.")
+        mode_label = QLabel(f"ℹ️Current Mode ---{translate_mode}---\n\nMode and API key can only changed form Setting.\n\nCheck settings in Tools > Greatest Translater Settings.")
         layout.addWidget(mode_label)
 
     # Select target language
@@ -115,9 +110,36 @@ def setting(from_browser = False):
     safe_mode_checkbox.setChecked(is_safe_mode)
     layout.addWidget(safe_mode_checkbox)
 
+    deepl_api_usage = get_character_count("DeepL")
+    deepl_meter_label = QLabel(f"DeepL: {deepl_api_usage} / {deepl_api_limits} chars used: {round(deepl_api_usage / deepl_api_limits * 100,2)} %")
+    layout.addWidget(deepl_meter_label)
+
+    deepl_progress_bar = QProgressBar()
+    deepl_progress_bar.setMinimum(0)
+    deepl_progress_bar.setMaximum(100)
+
+
+    print(deepl_api_usage/deepl_api_limits)
+    deepl_progress_bar.setValue(deepl_api_usage/deepl_api_limits * 100)
+    layout.addWidget(deepl_progress_bar)
+
+    google_api_usage = get_character_count("Google")
+    google_meter_label = QLabel(
+        f"Google Cloud Translation: {google_api_usage} / {google_cloud_api_limits} chars used: {round(google_api_usage / google_cloud_api_limits * 100, 2)} %")
+    layout.addWidget(google_meter_label)
+
+    google_progress_bar = QProgressBar()
+    google_progress_bar.setMinimum(0)
+    google_progress_bar.setMaximum(100)
+
+    print(google_api_usage/google_cloud_api_limits)
+    google_progress_bar.setValue(google_api_usage/google_cloud_api_limits * 100)
+    layout.addWidget(google_progress_bar)
+
     button = QPushButton('Save')
     button.clicked.connect(dialog.accept)
     layout.addWidget(button)
+
 
     dialog.setLayout(layout)
     dialog.exec()
@@ -131,11 +153,13 @@ def setting(from_browser = False):
         json_load['setting']['source_field'] = source_text.text()
         json_load['setting']['target_field'] = target_text.text()
 
+        # Only from menu
         if not from_browser:
             json_load['setting']['DEEPL_API_KEY'] = deepl_api_text.text()
             json_load['setting']['GOOGLE_CLOUD_API_KEY'] = google_cloud_api_text.text()
 
-        if translate_mode == "Google" and from_browser  or (not from_browser and radio_google.isChecked()):  # Google mode
+        # Google mode
+        if translate_mode == "Google" and from_browser  or (not from_browser and radio_google.isChecked()):
             json_load['setting']['translation_mode'] = "Google"
             json_load['setting']['target_language_index_google'] = language_combo.currentIndex()
             json_load['setting']['target_language_google'] = language_combo.currentData()
@@ -166,13 +190,13 @@ def get_field():
 
 
 # Read character count from Json
-def get_character_count():
+def get_character_count(translate_mode):
     addon_dir = os.path.dirname(os.path.realpath(__file__))
     json_path = os.path.join(addon_dir, 'setting.json')
 
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
-        if json_load['setting']['translation_mode'] == 'DeepL':
+        if translate_mode == 'DeepL':
             character_count = json_load['character_count']['deepl']
         else:
             character_count = json_load['character_count']['google']
