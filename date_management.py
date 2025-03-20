@@ -30,7 +30,7 @@ def check_update_date():
     #-----DeepL------
 
     # date from json
-    read_date = dates.get("deepl")
+    read_date = dates.get("DeepL")
     read_date = datetime.datetime.strptime(read_date, '%Y-%m-%d').date()
 
     # current date
@@ -50,7 +50,7 @@ def check_update_date():
     #-----Google-----
 
     # date from json
-    read_date = dates.get("google")
+    read_date = dates.get("Google")
     read_date = datetime.datetime.strptime(read_date, '%Y-%m-%d').date()
 
 
@@ -73,9 +73,9 @@ def write_date(translate_mode, date):
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
         if translate_mode == 'DeepL':
-            json_load['date']['deepl'] = date
+            json_load['date']['DeepL'] = date
         else:
-            json_load['date']['google'] = date
+            json_load['date']['Google'] = date
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()

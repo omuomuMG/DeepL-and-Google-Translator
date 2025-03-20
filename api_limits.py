@@ -12,9 +12,9 @@ def reset_api_usage(translate_mode):
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
         if translate_mode == 'DeepL':
-            json_load['character_count']['deepl'] = 0
+            json_load['character_count']['Deepl'] = 0
         else:
-            json_load['character_count']['google'] = 0
+            json_load['character_count']['Google'] = 0
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()

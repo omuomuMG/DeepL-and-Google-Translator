@@ -197,9 +197,9 @@ def get_character_count(translate_mode):
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
         if translate_mode == 'DeepL':
-            character_count = json_load['character_count']['deepl']
+            character_count = json_load['character_count']['DeepL']
         else:
-            character_count = json_load['character_count']['google']
+            character_count = json_load['character_count']['Google']
 
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
@@ -214,9 +214,9 @@ def write_character_count(total_character_length):
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
         if json_load['setting']['translation_mode'] == 'DeepL':
-            json_load['character_count']['deepl'] = total_character_length
+            json_load['character_count']['DeepL'] = total_character_length
         else:
-            json_load['character_count']['google'] = total_character_length
+            json_load['character_count']['Google'] = total_character_length
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
