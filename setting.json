@@ -5,15 +5,19 @@
         "DEEPL_API_KEY": "",
         "GOOGLE_CLOUD_API_KEY": "",
         "translation_mode": "Google",
-        "target_language_deepl": "IT",
-        "target_language_index_deepl": 15,
-        "target_language_google": "ja",
-        "target_language_index_google": 84,
+        "target_language_deepl": "JA",
+        "target_language_index_deepl": 16,
+        "target_language_google": "ltg",
+        "target_language_index_google": 100,
         "is_safe_mode": true,
         "target_language": "eu"
     },
     "character_count": {
-        "deepl": 0,
-        "google": 0
+        "DeepL": 5,
+        "Google": 0
+    },
+    "date": {
+        "DeepL": "2025-04-08",
+        "Google": "2025-04-01"
     }
 }
