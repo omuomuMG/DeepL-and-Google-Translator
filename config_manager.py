@@ -1,8 +1,12 @@
 import json
+from datetime import datetime
+
 from aqt.qt import *
 
 from .api_limits import deepl_api_limits, google_cloud_api_limits
 from .Supported_Languages import DEEPL_LANGUAGES, GOOGLE_LANGUAGES
+from .date_management import check_update_date, get_date_from_json
+
 
 def setting(from_browser = False):
     settings = get_field()
@@ -14,6 +18,8 @@ def setting(from_browser = False):
     target_language_index_deepl = settings.get('target_language_index_deepl')
     target_language_index_google = settings.get('target_language_index_google')
     is_safe_mode = settings.get('is_safe_mode')
+
+
 
     dialog = QDialog()
     dialog.setWindowTitle('Setting')
@@ -46,6 +52,18 @@ def setting(from_browser = False):
         google_cloud_api_text = QLineEdit(f"{google_cloud_api_key}")
         layout.addWidget(deepl_api_label)
         layout.addWidget(google_cloud_api_text)
+
+        # about initial date of DeepL api key
+        dates = get_date_from_json()
+        start_date_deepl = dates.get('DeepL')
+        start_date_deepl = datetime.strptime(start_date_deepl, '%Y-%m-%d')
+
+        date_label = QLabel("Please enter the start date of the Current usage period about DeepL api key:")
+        layout.addWidget(date_label)
+        date_input = QDateEdit()
+        date_input.setCalendarPopup(True)
+        date_input.setDate(QDate(start_date_deepl.year, start_date_deepl.month, start_date_deepl.day))
+        layout.addWidget(date_input)
 
 
         # Select Translation Mode Google Could or DeepL
@@ -157,7 +175,7 @@ def setting(from_browser = False):
         if not from_browser:
             json_load['setting']['DEEPL_API_KEY'] = deepl_api_text.text()
             json_load['setting']['GOOGLE_CLOUD_API_KEY'] = google_cloud_api_text.text()
-
+            json_load['date']['DeepL'] = date_input.date().toString("yyyy-MM-dd")
         # Google mode
         if translate_mode == "Google" and from_browser  or (not from_browser and radio_google.isChecked()):
             json_load['setting']['translation_mode'] = "Google"
@@ -173,7 +191,7 @@ def setting(from_browser = False):
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
-
+    check_update_date()
 
 def get_field():
     addon_dir = os.path.dirname(os.path.realpath(__file__))
