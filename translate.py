@@ -6,16 +6,18 @@ from PyQt6.QtCore import QTimer
 from aqt.editor import Editor
 from aqt.utils import showInfo
 
+from .fields_management import fetch_fields
+
 from .config_manager import get_field, get_character_count, write_character_count
 
 # main translate function
 def translate(editor: Editor):
     note  = editor.note
 
+    source_field, target_field = fetch_fields()
+
     # Fetch Datas from Json file
     settings = get_field()
-    source_field = settings.get('source_field')
-    target_field = settings.get('target_field')
     deepl_api_key = settings.get('DEEPL_API_KEY')
     google_cloud_api_key = settings.get('GOOGLE_CLOUD_API_KEY')
     translate_mode = settings.get('translation_mode')

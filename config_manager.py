@@ -3,6 +3,8 @@ from datetime import datetime
 
 from aqt.qt import *
 
+from .fields_management import fetch_fields, save_fields
+
 from .api_limits import deepl_api_limits, google_cloud_api_limits
 from .Supported_Languages import DEEPL_LANGUAGES, GOOGLE_LANGUAGES
 from .date_management import check_update_date, get_date_from_json
@@ -10,8 +12,12 @@ from .date_management import check_update_date, get_date_from_json
 
 def setting(from_browser = False):
     settings = get_field()
-    source_field = settings.get('source_field')
-    target_field = settings.get('target_field')
+
+    if from_browser:
+        source_field, target_field = fetch_fields(False)
+    else:  
+        source_field, target_field = fetch_fields(True)
+
     deepl_api_key = settings.get('DEEPL_API_KEY')
     google_cloud_api_key = settings.get('GOOGLE_CLOUD_API_KEY')
     translate_mode = settings.get('translation_mode')
@@ -191,6 +197,14 @@ def setting(from_browser = False):
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
+
+    if from_browser:
+        save_fields(source_text.text(), target_text.text(), False)
+    else:  
+        save_fields(source_text.text(), target_text.text(), True)
+    
+
+    
     check_update_date()
 
 def get_field():
