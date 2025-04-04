@@ -2,8 +2,9 @@ import json
 from datetime import datetime
 
 from aqt.qt import *
-
+import os
 from .fields_management import fetch_fields, save_fields
+import json
 
 from .api_limits import deepl_api_limits, google_cloud_api_limits
 from .Supported_Languages import DEEPL_LANGUAGES, GOOGLE_LANGUAGES
@@ -34,16 +35,39 @@ def setting(from_browser = False):
     layout = QVBoxLayout()
 
     # about source field
-    source_label = QLabel("Source Field:")
-    source_text = QLineEdit(f"{source_field}")
-    layout.addWidget(source_label)
-    layout.addWidget(source_text)
+    if from_browser:
+        # Get available fields from the current note type
+        from aqt import mw
+        note_type = mw.col.models.current()
+        available_fields = [field['name'] for field in note_type['flds']]
+        
+        source_label = QLabel("Source Field:")
+        source_combo = QComboBox()
+        source_combo.addItems(available_fields)
+        if source_field in available_fields:
+            source_combo.setCurrentText(source_field)
+        layout.addWidget(source_label)
+        layout.addWidget(source_combo)
+        
+        # about target field
+        target_label = QLabel("Target Field:")
+        target_combo = QComboBox()
+        target_combo.addItems(available_fields)
+        if target_field in available_fields:
+            target_combo.setCurrentText(target_field)
+        layout.addWidget(target_label)
+        layout.addWidget(target_combo)
+    else:
+        source_label = QLabel("Source Field:")
+        source_text = QLineEdit(f"{source_field}")
+        layout.addWidget(source_label)
+        layout.addWidget(source_text)
 
-    # about target field
-    target_label = QLabel("Target Field:")
-    target_text = QLineEdit(f"{target_field}")
-    layout.addWidget(target_label)
-    layout.addWidget(target_text)
+        # about target field
+        target_label = QLabel("Target Field:")
+        target_text = QLineEdit(f"{target_field}")
+        layout.addWidget(target_label)
+        layout.addWidget(target_text)
 
     # User can change API key and mode only from Menu
     if not from_browser:
@@ -174,8 +198,15 @@ def setting(from_browser = False):
     # Save setting
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
-        json_load['setting']['source_field'] = source_text.text()
-        json_load['setting']['target_field'] = target_text.text()
+        if from_browser:
+            selected_source_field = source_combo.currentText()
+            selected_target_field = target_combo.currentText()
+        else:
+            selected_source_field = source_text.text()
+            selected_target_field = target_text.text()
+            
+        json_load['setting']['source_field'] = selected_source_field
+        json_load['setting']['target_field'] = selected_target_field
 
         # Only from menu
         if not from_browser:
@@ -199,7 +230,7 @@ def setting(from_browser = False):
         json_open.truncate()
 
     if from_browser:
-        save_fields(source_text.text(), target_text.text(), False)
+        save_fields(source_combo.currentText(), target_combo.currentText(), False)
     else:  
         save_fields(source_text.text(), target_text.text(), True)
     
