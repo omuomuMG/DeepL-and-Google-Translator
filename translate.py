@@ -5,6 +5,8 @@ from os import write
 from PyQt6.QtCore import QTimer
 from aqt.editor import Editor
 from aqt.utils import showInfo
+from aqt.qt import *
+from aqt import mw
 
 from .fields_management import fetch_fields
 
@@ -103,4 +105,43 @@ def check_api_limits(translated_text, translation_mode):
         write_character_count(character_count + len(translated_text))
         return True
 
+def convert_words(note):
+    source_field, target_field = fetch_fields()
+    settings = get_field()
+    deepl_api_key = settings.get('DEEPL_API_KEY')
+    google_cloud_api_key = settings.get('GOOGLE_CLOUD_API_KEY')
+    translate_mode = settings.get('translation_mode')
+    target_language_deepl = settings.get('target_language_deepl')
+    target_language_google = settings.get('target_language_google')
+    is_safe_mode = settings.get('is_safe_mode')
 
+    if source_field not in note:
+        showInfo("Source field not found. Check settings in Tools > Greatest Translater Settings.")
+        return False
+
+    if target_field not in note:
+        showInfo(f"Target field '{target_field}' does not exist in this note.")
+        return False
+
+    source_text = note[source_field]
+    if source_text == "":
+        showInfo("Source text must not be empty.")
+        return False
+
+    try:
+        result = ""
+        if translate_mode == "DeepL" and (not is_safe_mode or check_api_limits(source_text, translate_mode)):
+            result = translate_by_deepl(source_text, deepl_api_key, target_language_deepl)
+        elif translate_mode == "Google" and (not is_safe_mode or check_api_limits(source_text, translate_mode)):
+            result = translate_by_cloud_translation(source_text, google_cloud_api_key, target_language_google)
+        else:  # limit exceeded
+            showInfo('The free quota for translations may be exceeded. If you still wish to translate, please exit safe mode.')
+            return False
+
+        note[target_field] = result
+        note.flush()  # Save the updated note
+        return True
+
+    except Exception as e:
+        showInfo(f'Error Occurred: {e}')
+        return False

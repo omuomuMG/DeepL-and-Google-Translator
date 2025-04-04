@@ -1,9 +1,10 @@
+import os
 from aqt import mw
 from aqt.qt import *
 from aqt.editor import Editor
 from aqt.utils import showInfo
-
-from .translate import translate
+import time
+from .translate import translate, convert_words
 from .config_manager import get_field, get_character_count, setting
 
 
@@ -87,14 +88,12 @@ def setting_button(buttons, editor):
 
     return buttons + [button]
 
-
 def get_selected_cards_from_browser(browser):
     selected_card_ids = browser.selectedCards()
     if not selected_card_ids:
         showInfo("Please select cards.")
         return []
     return selected_card_ids
-
 
 def process_selected_cards_in_browser(browser):
     selected_card_ids = get_selected_cards_from_browser(browser)
@@ -106,9 +105,10 @@ def process_selected_cards_in_browser(browser):
 
     for card_id in selected_card_ids:
         card = mw.col.getCard(card_id)
+        time.sleep(1)
 
         note = card.note()
-        if not translate(note):
+        if not convert_words(note):
             failed_count += 1
         else:
             success_count += 1
