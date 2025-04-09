@@ -37,8 +37,6 @@ def setting(from_browser = False, editor = None):
     layout = QVBoxLayout()
 
     if from_browser:
-        
-
         if editor is not None and hasattr(editor, 'nids') and editor.nids:
             note = mw.col.getNote(editor.nids[0])
         else:
@@ -52,14 +50,6 @@ def setting(from_browser = False, editor = None):
             note_type_id = note['mid']
         note_type = mw.col.models.get(note_type_id)
         available_fields = [field['name'] for field in note_type['flds']]
-
-        print("note_type_id", note_type_id)
-        # print(note_type)
-        # print(available_fields)
-
-        #note_name = mw.col.models.current()['name']
-
-
         
         source_label = QLabel("Source Field:")
         source_combo = QComboBox()
