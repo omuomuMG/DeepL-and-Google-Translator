@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 
 from aqt.qt import *
+from aqt import mw
 import os
 from .fields_management import fetch_fields, save_fields
 import json
@@ -11,7 +12,8 @@ from .Supported_Languages import DEEPL_LANGUAGES, GOOGLE_LANGUAGES
 from .date_management import check_update_date, get_date_from_json
 
 
-def setting(from_browser = False):
+
+def setting(from_browser = False, editor = None):
     settings = get_field()
 
     if from_browser:
@@ -34,12 +36,30 @@ def setting(from_browser = False):
 
     layout = QVBoxLayout()
 
-    # about source field
     if from_browser:
-        # Get available fields from the current note type
-        from aqt import mw
-        note_type = mw.col.models.current()
+        
+
+        if editor is not None and hasattr(editor, 'nids') and editor.nids:
+            note = mw.col.getNote(editor.nids[0])
+        else:
+            # fallback if editor.note is available
+            note = editor.note
+
+        # Use note.mid if available, otherwise fall back to note['mid']. mid is a attribute about the note type id.
+        if hasattr(note, "mid"):
+            note_type_id = note.mid
+        else:
+            note_type_id = note['mid']
+        note_type = mw.col.models.get(note_type_id)
         available_fields = [field['name'] for field in note_type['flds']]
+
+        print("note_type_id", note_type_id)
+        # print(note_type)
+        # print(available_fields)
+
+        #note_name = mw.col.models.current()['name']
+
+
         
         source_label = QLabel("Source Field:")
         source_combo = QComboBox()

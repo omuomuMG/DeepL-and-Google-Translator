@@ -13,7 +13,7 @@ def on_strike(editor: Editor):
 
 # Editor is passed as an argument at auto
 def open_setting(editor: Editor):
-    setting(True)
+    setting(True, editor)
 
 
 def symbol_button(buttons, editor):
@@ -86,6 +86,7 @@ def setting_button(buttons, editor):
     else:
         print("Error: The returned button is not a QPushButton.")
 
+    
     return buttons + [button]
 
 def get_selected_cards_from_browser(browser):
