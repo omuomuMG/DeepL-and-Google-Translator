@@ -17,9 +17,9 @@ def setting(from_browser = False, editor = None):
     settings = get_field()
 
     if from_browser:
-        source_field, target_field = fetch_fields(False)
+        source_field, target_field = fetch_fields(False, editor)
     else:  
-        source_field, target_field = fetch_fields(True)
+        source_field, target_field = fetch_fields(True, editor)
 
     deepl_api_key = settings.get('DEEPL_API_KEY')
     google_cloud_api_key = settings.get('GOOGLE_CLOUD_API_KEY')
@@ -176,8 +176,6 @@ def setting(from_browser = False, editor = None):
     deepl_progress_bar.setMinimum(0)
     deepl_progress_bar.setMaximum(100)
 
-
-    print(deepl_api_usage/deepl_api_limits)
     deepl_progress_bar.setValue(deepl_api_usage/deepl_api_limits * 100)
     layout.addWidget(deepl_progress_bar)
 
@@ -190,7 +188,6 @@ def setting(from_browser = False, editor = None):
     google_progress_bar.setMinimum(0)
     google_progress_bar.setMaximum(100)
 
-    print(google_api_usage/google_cloud_api_limits)
     google_progress_bar.setValue(google_api_usage/google_cloud_api_limits * 100)
     layout.addWidget(google_progress_bar)
 
@@ -240,9 +237,9 @@ def setting(from_browser = False, editor = None):
         json_open.truncate()
 
     if from_browser:
-        save_fields(source_combo.currentText(), target_combo.currentText(), False)
+        save_fields(source_combo.currentText(), target_combo.currentText(), False, editor=editor)
     else:  
-        save_fields(source_text.text(), target_text.text(), True)
+        save_fields(source_text.text(), target_text.text(), True, editor=editor)
     
 
     

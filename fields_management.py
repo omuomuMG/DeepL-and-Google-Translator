@@ -5,11 +5,27 @@ import json
 
 
 
-def fetch_fields(DefaltMode = False):
+def fetch_fields(DefaltMode = False, editor = None):
     if DefaltMode:
         deck_name = "GreatestTranslatorDefault"
     else:
         deck_name = mw.col.decks.name(mw.col.decks.get_current_id())
+    if editor is not None:
+        if editor is not None and hasattr(editor, 'nids') and editor.nids:
+            note = mw.col.getNote(editor.nids[0])
+        else:
+            # fallback if editor.note is available
+            note = editor.note
+            # Use note.mid if available, otherwise fall back to note['mid']. mid is a attribute about the note type id.
+        if hasattr(note, "mid"):
+            note_type_id = note.mid
+        else:
+            note_type_id = note['mid']
+    else:
+        note_type_id = ""
+    
+    deck_name = deck_name + str(note_type_id)
+    print(deck_name)
     
     addon_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(addon_dir, "GreatestTranslatorFieldsSetting.json")
@@ -43,11 +59,28 @@ def fetch_fields(DefaltMode = False):
         
         return source_field, target_field
 
-def save_fields(source_field, target_field, DefaltMode = False):
+def save_fields(source_field, target_field, DefaltMode = False, editor = None):
     if DefaltMode:
         deck_name = "GreatestTranslatorDefault"
     else:
         deck_name = mw.col.decks.name(mw.col.decks.get_current_id())
+
+    if editor is not None:
+        if editor is not None and hasattr(editor, 'nids') and editor.nids:
+            note = mw.col.getNote(editor.nids[0])
+        else:
+            # fallback if editor.note is available
+            note = editor.note
+
+            # Use note.mid if available, otherwise fall back to note['mid']. mid is a attribute about the note type id.
+        if hasattr(note, "mid"):
+            note_type_id = note.mid
+        else:
+            note_type_id = note['mid']
+    else:
+        note_type_id = ""
+
+    deck_name = deck_name + str(note_type_id)
     
     addon_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(addon_dir, "GreatestTranslatorFieldsSetting.json")

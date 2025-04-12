@@ -16,7 +16,7 @@ from .config_manager import get_field, get_character_count, write_character_coun
 def translate(editor: Editor):
     note  = editor.note
 
-    source_field, target_field = fetch_fields()
+    source_field, target_field = fetch_fields(editor=editor)
 
     # Fetch Datas from Json file
     settings = get_field()
@@ -94,7 +94,7 @@ def translate_by_deepl(source_text, api_key, target_language):
         return result
     except:
         return None
-
+    
 # Check to see if the API free quota has been exceeded.
 def check_api_limits(translated_text, translation_mode):
     character_count = get_character_count(translation_mode)
