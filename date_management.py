@@ -44,7 +44,7 @@ def check_update_date():
         new_update_date = new_update_date + relativedelta(months=1)
         write_date("DeepL", new_update_date.strftime('%Y-%m-%d'))
 
-    reset_api_usage("DeepL")
+        reset_api_usage("DeepL")
 
 
     #-----Google-----
@@ -64,7 +64,7 @@ def check_update_date():
         new_update_date = new_update_date + relativedelta(months=1)
         write_date("Google", new_update_date.strftime('%Y-%m-%d'))
 
-    reset_api_usage("Google")
+        reset_api_usage("Google")
 
 # Update date in Json "date"
 def write_date(translate_mode, date):
