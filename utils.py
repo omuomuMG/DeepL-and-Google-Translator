@@ -32,12 +32,12 @@ def symbol_button(buttons, editor):
     elif translate_mode == 'Google':
         icon_path = os.path.join(addon_dir, 'resources/google-logo-normal.png')
 
-    editor._links['symbol_button'] = on_strike
+    editor._links['Greatest_Translator_Button'] = on_strike
 
     button = editor._addButton(
         icon_path,
-        "symbol_button",  # Button name
-        "symbol_button"  # Button label
+        "Greatest_Translator_Button",  # Button name
+        "Greatest_Translator_Button"  # Button label
     )
 
 
