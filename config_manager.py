@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from pathlib import Path
 
 from aqt.qt import *
 from aqt import mw
@@ -199,8 +200,8 @@ def setting(from_browser = False, editor = None):
     dialog.setLayout(layout)
     dialog.exec()
 
-    addon_dir = os.path.dirname(os.path.realpath(__file__))
-    json_path = os.path.join(addon_dir, 'setting.json')
+    profile_dir = Path(mw.pm.profileFolder())
+    json_path = profile_dir / "GreatestTranslatorSetting.json"
 
     # Save setting
     with open(json_path, 'r+') as json_open:
@@ -246,8 +247,8 @@ def setting(from_browser = False, editor = None):
     check_update_date()
 
 def get_field():
-    addon_dir = os.path.dirname(os.path.realpath(__file__))
-    json_path = os.path.join(addon_dir, 'setting.json')
+    profile_dir = Path(mw.pm.profileFolder())
+    json_path = profile_dir / "GreatestTranslatorSetting.json"
 
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
@@ -261,8 +262,8 @@ def get_field():
 
 # Read character count from Json
 def get_character_count(translate_mode):
-    addon_dir = os.path.dirname(os.path.realpath(__file__))
-    json_path = os.path.join(addon_dir, 'setting.json')
+    profile_dir = Path(mw.pm.profileFolder())
+    json_path = profile_dir / "GreatestTranslatorSetting.json"
 
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
@@ -279,8 +280,9 @@ def get_character_count(translate_mode):
 
 # Write character count to Json
 def write_character_count(total_character_length):
-    addon_dir = os.path.dirname(os.path.realpath(__file__))
-    json_path = os.path.join(addon_dir, 'setting.json')
+    profile_dir = Path(mw.pm.profileFolder())
+    json_path = profile_dir / "GreatestTranslatorSetting.json"
+    
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
         if json_load['setting']['translation_mode'] == 'DeepL':

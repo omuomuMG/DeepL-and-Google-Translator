@@ -1,13 +1,21 @@
 import datetime
 import json
 import os
+from pathlib import Path
 import sys
+
+from aqt import mw
 
 from .api_limits import  reset_api_usage
 
 def get_date_from_json():
-    addon_dir = os.path.dirname(os.path.realpath(__file__))
-    json_path = os.path.join(addon_dir, 'setting.json')
+    profile_dir = Path(mw.pm.profileFolder())
+    json_path = profile_dir / "GreatestTranslatorSetting.json"
+
+    if not json_path.exists():
+        default_config = {"setting": {"source_field": "Front","target_field": "Back","DEEPL_API_KEY": "INSERT YOUR API","GOOGLE_CLOUD_API_KEY": "INSERT YOUR API","translation_mode": "Google","target_language_deepl": "JA","target_language_index_deepl": 16,"target_language_google": "ja","target_language_index_google": 84,"is_safe_mode": True,"target_language": "eu"},"character_count": {"DeepL": 0,"Google": 0},"date": {"DeepL": "2020-04-01","Google": "2020-04-01"}}
+        with open(json_path, 'w', encoding='utf-8') as f:
+            json.dump(default_config, f, indent=4)
 
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
@@ -68,8 +76,14 @@ def check_update_date():
 
 # Update date in Json "date"
 def write_date(translate_mode, date):
-    addon_dir = os.path.dirname(os.path.realpath(__file__))
-    json_path = os.path.join(addon_dir, 'setting.json')
+    profile_dir = Path(mw.pm.profileFolder())
+    json_path = profile_dir / "GreatestTranslatorSetting.json"
+
+    if not json_path.exists():
+        default_config = {"setting": {"source_field": "Front","target_field": "Back","DEEPL_API_KEY": "INSERT YOUR API","GOOGLE_CLOUD_API_KEY": "INSERT YOUR API","translation_mode": "Google","target_language_deepl": "JA","target_language_index_deepl": 16,"target_language_google": "ja","target_language_index_google": 84,"is_safe_mode": True,"target_language": "eu"},"character_count": {"DeepL": 0,"Google": 0},"date": {"DeepL": "2020-04-01","Google": "2025-04-01"}}
+        with open(json_path, 'w', encoding='utf-8') as f:
+            json.dump(default_config, f, indent=4)
+
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
         if translate_mode == 'DeepL':

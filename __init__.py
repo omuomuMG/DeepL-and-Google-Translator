@@ -8,7 +8,7 @@ from .config_manager import setting, get_field
 from aqt import gui_hooks
 
 # Check API update date
-check_update_date()
+gui_hooks.profile_did_open.append(lambda: check_update_date())
 
 
 
