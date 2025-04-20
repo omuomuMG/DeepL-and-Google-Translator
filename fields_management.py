@@ -1,3 +1,4 @@
+from pathlib import Path
 from aqt import mw
 import os
 import json
@@ -25,10 +26,9 @@ def fetch_fields(DefaltMode = False, editor = None):
         note_type_id = ""
     
     deck_name = deck_name + str(note_type_id)
-    print(deck_name)
-    
-    addon_dir = os.path.dirname(os.path.abspath(__file__))
-    json_path = os.path.join(addon_dir, "GreatestTranslatorFieldsSetting.json")
+
+    profile_dir = Path(mw.pm.profileFolder())
+    json_path = profile_dir / "GreatestTranslatorFieldsSetting.json"
     
     if os.path.exists(json_path):
         with open(json_path, 'r', encoding='utf-8') as f:
@@ -40,6 +40,12 @@ def fetch_fields(DefaltMode = False, editor = None):
     else:
         # if the JSON file does not exist, create an empty dictionary
         fields_settings = {}
+
+    if "GreatestTranslatorDefault" not in fields_settings:
+        fields_settings["GreatestTranslatorDefault"] = {"Front": "Front", "Back": "Back"}
+        # write back to JSON so that default entry is persisted
+        with open(json_path, 'w', encoding='utf-8') as f:
+            json.dump(fields_settings, f, ensure_ascii=False, indent=2)
     
     # search for the deck name in the JSON data
     if deck_name in fields_settings:
@@ -48,6 +54,7 @@ def fetch_fields(DefaltMode = False, editor = None):
         return source_field, target_field
     else:
         #  if the deck name is not found
+
         source_field = fields_settings["GreatestTranslatorDefault"].get("Front", "")
         target_field = fields_settings["GreatestTranslatorDefault"].get("Back", "")
         fields_settings[deck_name] = {
@@ -82,8 +89,8 @@ def save_fields(source_field, target_field, DefaltMode = False, editor = None):
 
     deck_name = deck_name + str(note_type_id)
     
-    addon_dir = os.path.dirname(os.path.abspath(__file__))
-    json_path = os.path.join(addon_dir, "GreatestTranslatorFieldsSetting.json")
+    profile_dir = Path(mw.pm.profileFolder())
+    json_path = profile_dir / "GreatestTranslatorFieldsSetting.json"
     
     if os.path.exists(json_path):
         with open(json_path, 'r', encoding='utf-8') as f:
