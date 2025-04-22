@@ -84,13 +84,22 @@ def setting(from_browser = False, editor = None):
     if not from_browser:
         # about Deepl API KEY
         deepl_api_label = QLabel("DeepL API KEY:")
-        deepl_api_text = QLineEdit(f"{deepl_api_key}")
+        # if deepl_api_key:
+        deepl_api_text = QLineEdit()
+        if deepl_api_key:
+            deepl_api_text.setText(deepl_api_key)
+        deepl_api_text.setPlaceholderText("********-****-****-****-************:fx")
         layout.addWidget(deepl_api_label)
         layout.addWidget(deepl_api_text)
 
         # about Google Cloud API KEY
         deepl_api_label = QLabel("Google Could API KEY:")
-        google_cloud_api_text = QLineEdit(f"{google_cloud_api_key}")
+
+        # if google_cloud_api_key:
+        google_cloud_api_text = QLineEdit()
+        if google_cloud_api_key:
+            google_cloud_api_text.setText(google_cloud_api_key)
+        google_cloud_api_text.setPlaceholderText("****************************************")
         layout.addWidget(deepl_api_label)
         layout.addWidget(google_cloud_api_text)
 
