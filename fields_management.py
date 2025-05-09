@@ -42,7 +42,7 @@ def fetch_fields(DefaltMode = False, editor = None):
         fields_settings = {}
 
     if "GreatestTranslatorDefault" not in fields_settings:
-        fields_settings["GreatestTranslatorDefault"] = {"Front": "Front", "Back": "Back"}
+        fields_settings["GreatestTranslatorDefault"] = {"Front": "Front", "Back": "Back", "target_language_deepl": "JA", "target_language_google": "ja", "target_language_index_deepl": 16, "target_language_index_google": 84}
         # write back to JSON so that default entry is persisted
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(fields_settings, f, ensure_ascii=False, indent=2)
@@ -51,22 +51,37 @@ def fetch_fields(DefaltMode = False, editor = None):
     if deck_name in fields_settings:
         source_field = fields_settings[deck_name].get("Front", "")
         target_field = fields_settings[deck_name].get("Back", "")
-        return source_field, target_field
+        target_language_deepl = fields_settings[deck_name].get("target_language_deepl", "")
+        target_language_google = fields_settings[deck_name].get("target_language_google", "")
+        target_language_index_deepl = fields_settings[deck_name].get("target_language_index_deepl", "")
+        target_language_index_google = fields_settings[deck_name].get("target_language_index_google", "")
+        
+        
+        return source_field, target_field, target_language_deepl, target_language_google, int(target_language_index_deepl), int(target_language_index_google)
     else:
         #  if the deck name is not found
 
         source_field = fields_settings["GreatestTranslatorDefault"].get("Front", "")
         target_field = fields_settings["GreatestTranslatorDefault"].get("Back", "")
+        target_language_deepl = fields_settings["GreatestTranslatorDefault"].get("target_language_deepl", "")
+        target_language_google = fields_settings["GreatestTranslatorDefault"].get("target_language_google", "")
+        target_language_index_deepl = fields_settings["GreatestTranslatorDefault"].get("target_language_index_deepl", "")
+        target_language_index_google = fields_settings["GreatestTranslatorDefault"].get("target_language_index_google", "")
+
         fields_settings[deck_name] = {
             "Front": source_field,
-            "Back": target_field
+            "Back": target_field,
+            "target_language_deepl": target_language_deepl,
+            "target_language_google": target_language_google,
+            "target_language_index_deepl": target_language_index_deepl,
+            "target_language_index_google": target_language_index_google
         }
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(fields_settings, f, ensure_ascii=False, indent=2)
         
-        return source_field, target_field
+        return source_field, target_field, target_language_deepl, target_language_google, int(target_language_index_deepl), int(target_language_index_google)
 
-def save_fields(source_field, target_field, DefaltMode = False, editor = None):
+def save_fields(source_field, target_field, target_langueage_deepl, target_language_google, target_language_index_deepl, target_language_index_google, DefaltMode = False, editor = None):
     if DefaltMode:
         deck_name = "GreatestTranslatorDefault"
     else:
@@ -106,7 +121,11 @@ def save_fields(source_field, target_field, DefaltMode = False, editor = None):
     # save the current deck name and its fields to the JSON data
     fields_settings[deck_name] = {
         "Front": source_field,
-        "Back": target_field
+        "Back": target_field,
+        "target_language_deepl": target_langueage_deepl,
+        "target_language_google": target_language_google,
+        "target_language_index_deepl": target_language_index_deepl,
+        "target_language_index_google": target_language_index_google
     }
     
     with open(json_path, 'w', encoding='utf-8') as f:

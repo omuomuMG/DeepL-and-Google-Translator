@@ -18,15 +18,13 @@ def setting(from_browser = False, editor = None):
     settings = get_field()
 
     if from_browser:
-        source_field, target_field = fetch_fields(False, editor)
+        source_field, target_field, target_language_deepl, target_language_google, target_language_index_deepl, target_language_index_google = fetch_fields(False, editor)
     else:  
-        source_field, target_field = fetch_fields(True, editor)
+        source_field, target_field, target_language_deepl, target_language_google, target_language_index_deepl, target_language_index_google = fetch_fields(True, editor)
 
     deepl_api_key = settings.get('DEEPL_API_KEY')
     google_cloud_api_key = settings.get('GOOGLE_CLOUD_API_KEY')
     translate_mode = settings.get('translation_mode')
-    target_language_index_deepl = settings.get('target_language_index_deepl')
-    target_language_index_google = settings.get('target_language_index_google')
     is_safe_mode = settings.get('is_safe_mode')
 
 
@@ -242,14 +240,19 @@ def setting(from_browser = False, editor = None):
 
         json_load['setting']['is_safe_mode'] = safe_mode_checkbox.isChecked()
 
+        target_language_deepl = json_load['setting']['target_language_deepl']
+        target_language_google = json_load['setting']['target_language_google']
+        target_language_index_deepl = json_load['setting']['target_language_index_deepl']
+        target_language_index_google = json_load['setting']['target_language_index_google']
+
         json_open.seek(0)
         json.dump(json_load, json_open, indent=4)
         json_open.truncate()
 
     if from_browser:
-        save_fields(source_combo.currentText(), target_combo.currentText(), False, editor=editor)
+        save_fields(source_combo.currentText(), target_combo.currentText(), target_language_deepl, target_language_google, target_language_index_deepl, target_language_index_google, False, editor=editor)
     else:  
-        save_fields(source_text.text(), target_text.text(), True, editor=editor)
+        save_fields(source_text.text(), target_text.text(),target_language_deepl, target_language_google, target_language_index_deepl, target_language_index_google, True, editor=editor)
     
 
     

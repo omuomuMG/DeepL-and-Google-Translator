@@ -1,4 +1,6 @@
+import json
 import os
+from pathlib import Path
 import sys
 from os import write
 
@@ -16,15 +18,13 @@ from .config_manager import get_field, get_character_count, write_character_coun
 def translate(editor: Editor):
     note  = editor.note
 
-    source_field, target_field = fetch_fields(editor=editor)
+    source_field, target_field, target_language_deepl, target_language_google, target_language_index_deepl, target_language_index_google = fetch_fields(editor=editor)
 
     # Fetch Datas from Json file
     settings = get_field()
     deepl_api_key = settings.get('DEEPL_API_KEY')
     google_cloud_api_key = settings.get('GOOGLE_CLOUD_API_KEY')
     translate_mode = settings.get('translation_mode')
-    target_language_deepl = settings.get('target_language_deepl')
-    target_language_google = settings.get('target_language_google')
     is_safe_mode = settings.get('is_safe_mode')
 
     if source_field not in note:
