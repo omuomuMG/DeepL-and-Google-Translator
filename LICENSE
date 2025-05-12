@@ -1,0 +1,30 @@
+Apache License  
+Version 2.0, January 2004  
+http://www.apache.org/licenses/
+
+Copyright (c) 2025 [omuomuMG]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+---
+
+## Third-party Licenses
+
+- **Icons**: Some icons are provided by [Icons8](https://icons8.com/).  
+  Icons8 icons are used in accordance with their [Terms of Service](https://icons8.com/license).
+- **DeepL Python Library**:  
+  This add-on uses the [deepl-python](https://github.com/DeepLcom/deepl-python) library, which is licensed under the MIT License.
+- **Google API Python Client**:  
+  This add-on uses the [google-api-python-client](https://github.com/googleapis/google-api-python-client), which is licensed under the Apache License 2.0.
+- **dateutil**:  
+  This add-on uses [python-dateutil](https://github.com/dateutil/dateutil), which is licensed under the BSD 3-Clause License.
