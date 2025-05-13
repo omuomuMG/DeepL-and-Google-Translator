@@ -1,4 +1,4 @@
-# DeepL and Google Cloud Translate
+# DeepL and Google Cloud Translator
 <img width="1055" alt="スクリーンショット 2025-05-11 17 28 35" src="https://github.com/user-attachments/assets/d97d4cfa-682f-4bf7-9884-f68bb311affa" />
 
 ## Demo
@@ -13,12 +13,11 @@
 - ✅ It is completely free to use within the limits specified by each API.
 
 ## How to Use
-
-1. Go to `Tools > D and L Translator`
-
+<img width="492" alt="スクリーンショット 2025-05-13 17 05 16" src="https://github.com/user-attachments/assets/8a8b6b9d-7b61-466f-9ee1-e8ffd5eb63d5" /><br>
 <img width="389" alt="スクリーンショット 2025-05-12 17 03 56" src="https://github.com/user-attachments/assets/a96be101-ec51-4d15-8d5d-966f0ab77a18" />
 
 
+1. Go to `Tools > D and G Translator`
 2. Set up your fields:
    - `Source Field` is the field that contains the text to translate.
    - `Target Field` is the field where the translated text will be inserted.
@@ -31,6 +30,7 @@
 8. While adding or browsing cards, click the D & L Translator button to translate:
    - In DeepL mode, the DeepL icon appears.
    - In Google Cloud mode, the Google icon appears.
+  
 
 ## Per-Deck Settings
 
@@ -42,6 +42,8 @@
 
 - You can translate multiple languages at once via  
   `Browser > Edit > Translate Multiple Words - D and G Translator`.
+<img width="1086" alt="スクリーンショット 2025-05-13 17 06 22" src="https://github.com/user-attachments/assets/2830ff4c-4203-4982-955d-4ac04137fbef" />
+
 
 ## FAQ
 
