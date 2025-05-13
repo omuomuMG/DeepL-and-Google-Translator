@@ -11,7 +11,7 @@ google_cloud_api_limits = 450000    # Originally 500000
 # reset "character_count" of json
 def reset_api_usage(translate_mode):
     profile_dir = Path(mw.pm.profileFolder())
-    json_path = profile_dir / "GreatestTranslatorSetting.json"
+    json_path = profile_dir / "DandGTranslatorSetting.json"
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
         if translate_mode == 'DeepL':

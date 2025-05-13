@@ -10,7 +10,7 @@ from .api_limits import  reset_api_usage
 
 def get_date_from_json():
     profile_dir = Path(mw.pm.profileFolder())
-    json_path = profile_dir / "GreatestTranslatorSetting.json"
+    json_path = profile_dir / "DandGTranslatorSetting.json"
 
     if not json_path.exists():
         default_config = {"setting": {"source_field": "Front","target_field": "Back","DEEPL_API_KEY": "INSERT YOUR API","GOOGLE_CLOUD_API_KEY": "INSERT YOUR API","translation_mode": "Google","target_language_deepl": "JA","target_language_index_deepl": 16,"target_language_google": "ja","target_language_index_google": 84,"is_safe_mode": True,"target_language": "eu"},"character_count": {"DeepL": 0,"Google": 0},"date": {"DeepL": "2020-04-01","Google": "2020-04-01"}}
@@ -77,7 +77,7 @@ def check_update_date():
 # Update date in Json "date"
 def write_date(translate_mode, date):
     profile_dir = Path(mw.pm.profileFolder())
-    json_path = profile_dir / "GreatestTranslatorSetting.json"
+    json_path = profile_dir / "DandGTranslatorSetting.json"
 
     if not json_path.exists():
         default_config = {"setting": {"source_field": "Front","target_field": "Back","DEEPL_API_KEY": "INSERT YOUR API","GOOGLE_CLOUD_API_KEY": "INSERT YOUR API","translation_mode": "Google","target_language_deepl": "JA","target_language_index_deepl": 16,"target_language_google": "ja","target_language_index_google": 84,"is_safe_mode": True,"target_language": "eu"},"character_count": {"DeepL": 0,"Google": 0},"date": {"DeepL": "2020-04-01","Google": "2025-04-01"}}

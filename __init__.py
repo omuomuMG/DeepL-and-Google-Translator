@@ -10,15 +10,12 @@ from aqt import gui_hooks
 # Check API update date
 gui_hooks.profile_did_open.append(lambda: check_update_date())
 
-
-
-
 gui_hooks.browser_will_show.append(add_browser_menu_button)
 
 addHook("setupEditorButtons", symbol_button)
 addHook("setupEditorButtons", setting_button)
 
-action = QAction("Greatest-Translater", mw)
+action = QAction("DeepL and Google Translator", mw)
 
 action.triggered.connect(lambda: setting(False))
 

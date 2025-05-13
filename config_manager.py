@@ -208,7 +208,7 @@ def setting(from_browser = False, editor = None):
     dialog.exec()
 
     profile_dir = Path(mw.pm.profileFolder())
-    json_path = profile_dir / "GreatestTranslatorSetting.json"
+    json_path = profile_dir / "DandGTranslatorSetting.json"
 
     # Save setting
     with open(json_path, 'r+') as json_open:
@@ -260,7 +260,7 @@ def setting(from_browser = False, editor = None):
 
 def get_field():
     profile_dir = Path(mw.pm.profileFolder())
-    json_path = profile_dir / "GreatestTranslatorSetting.json"
+    json_path = profile_dir / "DandGTranslatorSetting.json"
 
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
@@ -275,7 +275,7 @@ def get_field():
 # Read character count from Json
 def get_character_count(translate_mode):
     profile_dir = Path(mw.pm.profileFolder())
-    json_path = profile_dir / "GreatestTranslatorSetting.json"
+    json_path = profile_dir / "DandGTranslatorSetting.json"
 
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)
@@ -293,7 +293,7 @@ def get_character_count(translate_mode):
 # Write character count to Json
 def write_character_count(total_character_length):
     profile_dir = Path(mw.pm.profileFolder())
-    json_path = profile_dir / "GreatestTranslatorSetting.json"
+    json_path = profile_dir / "DandGTranslatorSetting.json"
     
     with open(json_path, 'r+') as json_open:
         json_load = json.load(json_open)

@@ -121,6 +121,6 @@ def process_selected_cards_in_browser(browser):
 
 
 def add_browser_menu_button(browser):
-    action = QAction("Translate selected words - Greatest Translater", browser)
+    action = QAction("Translate selected words - DeepL and Google Translator", browser)
     action.triggered.connect(lambda: process_selected_cards_in_browser(browser))
     browser.form.menuEdit.addAction(action)

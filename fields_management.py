@@ -8,7 +8,7 @@ import json
 
 def fetch_fields(DefaltMode = False, editor = None):
     if DefaltMode:
-        deck_name = "GreatestTranslatorDefault"
+        deck_name = "DandGTranslatorDefault"
     else:
         deck_name = mw.col.decks.name(mw.col.decks.get_current_id())
     if editor is not None:
@@ -28,7 +28,7 @@ def fetch_fields(DefaltMode = False, editor = None):
     deck_name = deck_name + str(note_type_id)
 
     profile_dir = Path(mw.pm.profileFolder())
-    json_path = profile_dir / "GreatestTranslatorFieldsSetting.json"
+    json_path = profile_dir / "DandGTranslatorFieldsSetting.json"
     
     if os.path.exists(json_path):
         with open(json_path, 'r', encoding='utf-8') as f:
@@ -41,8 +41,8 @@ def fetch_fields(DefaltMode = False, editor = None):
         # if the JSON file does not exist, create an empty dictionary
         fields_settings = {}
 
-    if "GreatestTranslatorDefault" not in fields_settings:
-        fields_settings["GreatestTranslatorDefault"] = {"Front": "Front", "Back": "Back", "target_language_deepl": "JA", "target_language_google": "ja", "target_language_index_deepl": 16, "target_language_index_google": 84}
+    if "DandGTranslatorDefault" not in fields_settings:
+        fields_settings["DandGTranslatorDefault"] = {"Front": "Front", "Back": "Back", "target_language_deepl": "JA", "target_language_google": "ja", "target_language_index_deepl": 16, "target_language_index_google": 84}
         # write back to JSON so that default entry is persisted
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(fields_settings, f, ensure_ascii=False, indent=2)
@@ -61,12 +61,12 @@ def fetch_fields(DefaltMode = False, editor = None):
     else:
         #  if the deck name is not found
 
-        source_field = fields_settings["GreatestTranslatorDefault"].get("Front", "")
-        target_field = fields_settings["GreatestTranslatorDefault"].get("Back", "")
-        target_language_deepl = fields_settings["GreatestTranslatorDefault"].get("target_language_deepl", "")
-        target_language_google = fields_settings["GreatestTranslatorDefault"].get("target_language_google", "")
-        target_language_index_deepl = fields_settings["GreatestTranslatorDefault"].get("target_language_index_deepl", "")
-        target_language_index_google = fields_settings["GreatestTranslatorDefault"].get("target_language_index_google", "")
+        source_field = fields_settings["DandGTranslatorDefault"].get("Front", "")
+        target_field = fields_settings["DandGTranslatorDefault"].get("Back", "")
+        target_language_deepl = fields_settings["DandGTranslatorDefault"].get("target_language_deepl", "")
+        target_language_google = fields_settings["DandGTranslatorDefault"].get("target_language_google", "")
+        target_language_index_deepl = fields_settings["DandGTranslatorDefault"].get("target_language_index_deepl", "")
+        target_language_index_google = fields_settings["DandGTranslatorDefault"].get("target_language_index_google", "")
 
         fields_settings[deck_name] = {
             "Front": source_field,
@@ -83,7 +83,7 @@ def fetch_fields(DefaltMode = False, editor = None):
 
 def save_fields(source_field, target_field, target_langueage_deepl, target_language_google, target_language_index_deepl, target_language_index_google, DefaltMode = False, editor = None):
     if DefaltMode:
-        deck_name = "GreatestTranslatorDefault"
+        deck_name = "DandGTranslatorDefault"
     else:
         deck_name = mw.col.decks.name(mw.col.decks.get_current_id())
 
@@ -105,8 +105,8 @@ def save_fields(source_field, target_field, target_langueage_deepl, target_langu
     deck_name = deck_name + str(note_type_id)
     
     profile_dir = Path(mw.pm.profileFolder())
-    json_path = profile_dir / "GreatestTranslatorFieldsSetting.json"
-    
+    json_path = profile_dir / "DandGTranslatorFieldsSetting.json"
+
     if os.path.exists(json_path):
         with open(json_path, 'r', encoding='utf-8') as f:
             try:
