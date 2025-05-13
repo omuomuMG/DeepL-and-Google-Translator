@@ -53,6 +53,15 @@
 - **Q: The text isn't being translated to the correct field or language.**  
   **A:** Check the settings under the **Per-Deck Settings** section to ensure everything is properly configured.
 
+# ⚠️⚠️⚠️Very Important Notice⚠️⚠️⚠️
+- The API Usage feature is an experimental function.
+- API Usage reflects only the amount used within this app.
+- API Usage may not always be accurate. Please use it at your own risk.
+
+# Please Rate👍
+- [Rate this add-on 👍👍👍👍👍👍](https://ankiweb.net/shared/review/259448931)
+- [Star this project ⭐️⭐️⭐️⭐️⭐️⭐️](https://github.com/omuomuMG/DeepL-and-Google-Translator)
+
 ## LICENSE
 
 This add-on is distributed under the Apache License 2.0.
