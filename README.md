@@ -1,4 +1,4 @@
-# DeepL and Google Cloud Translator
+# DeepL-and-Google-Translator
 <img width="1055" alt="スクリーンショット 2025-05-11 17 28 35" src="https://github.com/user-attachments/assets/d97d4cfa-682f-4bf7-9884-f68bb311affa" />
 
 ## Demo
