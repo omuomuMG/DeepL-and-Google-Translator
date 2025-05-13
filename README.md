@@ -1,6 +1,8 @@
 # DeepL and Google Cloud Translate
+<img width="1055" alt="スクリーンショット 2025-05-11 17 28 35" src="https://github.com/user-attachments/assets/d97d4cfa-682f-4bf7-9884-f68bb311affa" />
 
 ## Demo
+![duo30__ver](https://github.com/user-attachments/assets/a8dd86d7-435c-48fc-ba24-75c29ae87090)
 
 ## What is it?
 
@@ -13,20 +15,25 @@
 ## How to Use
 
 1. Go to `Tools > D and L Translator`
+
+<img width="389" alt="スクリーンショット 2025-05-12 17 03 56" src="https://github.com/user-attachments/assets/a96be101-ec51-4d15-8d5d-966f0ab77a18" />
+
+
 2. Set up your fields:
    - `Source Field` is the field that contains the text to translate.
    - `Target Field` is the field where the translated text will be inserted.
    - ⚠️ This is a general setting. You can also configure settings per deck. See the **Per-Deck Settings** section for details.
-3. `Target Language` is the language that will be inserted into the `Target Field`.
+4. `Target Language` is the language that will be inserted into the `Target Field`.
    - Example: If you want to translate from English to Japanese, set the target language to Japanese.
-4. Insert your **DeepL or Google Cloud API Key**.
-5. If you're using DeepL, setting the **API start date** allows accurate usage tracking.
-6. Turn on **Safe Mode** to disable translation when API usage exceeds the limit.
-7. While adding or browsing cards, click the D & L Translator button to translate:
+5. Insert your **DeepL or Google Cloud API Key**.
+6. If you're using DeepL, setting the **API start date** allows accurate usage tracking.
+7. Turn on **Safe Mode** to disable translation when API usage exceeds the limit.
+8. While adding or browsing cards, click the D & L Translator button to translate:
    - In DeepL mode, the DeepL icon appears.
    - In Google Cloud mode, the Google icon appears.
 
 ## Per-Deck Settings
+
 
 - Click `Setting Button` the button next to the `D and L Translator` icon in the Browser or Add screens to configure settings specific to each note type.
 - These settings override the general settings and are recommended for accurate translation behavior.
