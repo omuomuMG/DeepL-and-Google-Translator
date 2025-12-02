@@ -184,7 +184,7 @@ def setting(from_browser = False, editor = None):
     deepl_progress_bar.setMinimum(0)
     deepl_progress_bar.setMaximum(100)
 
-    deepl_progress_bar.setValue(deepl_api_usage/deepl_api_limits * 100)
+    deepl_progress_bar.setValue(int(deepl_api_usage/deepl_api_limits * 100))
     layout.addWidget(deepl_progress_bar)
 
     google_api_usage = get_character_count("Google")
@@ -196,7 +196,7 @@ def setting(from_browser = False, editor = None):
     google_progress_bar.setMinimum(0)
     google_progress_bar.setMaximum(100)
 
-    google_progress_bar.setValue(google_api_usage/google_cloud_api_limits * 100)
+    google_progress_bar.setValue(int(google_api_usage/google_cloud_api_limits * 100))
     layout.addWidget(google_progress_bar)
 
     button = QPushButton('Save')
